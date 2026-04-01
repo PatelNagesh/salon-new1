@@ -1,0 +1,42 @@
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
+    "ANTHROPIC_AUTH_TOKEN": "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",
+    "ANTHROPIC_API_KEY": "",
+    "ANTHROPIC_MODEL": "nvidia/nemotron-3-nano-30b-a3b:free"
+  },
+  "commandPrefix": "/",
+  "defaultSkill": "create-prd",
+  "skills": {
+    "create-prd": {
+      "name": "Create PRD",
+      "description": "Generate a Product Requirements Document from conversation context",
+      "path": ".claude/commands/create-prd.md",
+      "command": "/create-prd"
+    },
+    "create-rules": {
+      "name": "Create CLAUDE rules",
+      "description": "Generate a CLAUDE.md from repository analysis",
+      "path": ".claude/commands/create-rules.md",
+      "command": "/create-rules"
+    },
+    "plan-feature": {
+      "name": "Plan feature",
+      "description": "Create a feature plan and validation command list",
+      "path": ".claude/commands/plan-feature.md",
+      "command": "/plan-feature"
+    },
+    "init-project": {
+      "name": "Init project",
+      "description": "Bootstrap project setup instructions",
+      "path": ".claude/commands/init-project.md",
+      "command": "/init-project"
+    },
+    "execute": {
+      "name": "Execute plan",
+      "description": "Run validation commands from the plan",
+      "path": ".claude/commands/execute.md",
+      "command": "/execute"
+    }
+  }
+}
