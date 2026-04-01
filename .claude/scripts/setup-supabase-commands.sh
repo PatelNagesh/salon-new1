@@ -9,6 +9,7 @@ read -p "Enter your Supabase Project API URL (e.g., https://xyz.supabase.co): " 
 read -p "Enter your Supabase Project Database URL (e.g., postgresql://...) " DATABASE_URL
 read -p "Enter your Supabase Auth Base URL (e.g., https://xyz.supabase.co/auth/v1): " AUTH_BASE_URL
 
+
 # Write .env file
 cat <<EOF > .env
 DATABASE_URL=$DATABASE_URL
