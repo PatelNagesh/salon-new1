@@ -1,30 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-// Placeholder screens
-const BookScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Book Appointment</Text>
-  </View>
-);
-
-const AppointmentsScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20 }}>My Appointments</Text>
-  </View>
-);
-
-const ServicesScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20 }}>Services</Text>
-  </View>
-);
-
-const ProfileScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20 }}>My Profile</Text>
-  </View>
-);
+import { CustomerBookingScreen } from '../screens/customer/CustomerBookingScreen';
+import { CustomerHistoryScreen } from '../screens/customer/CustomerHistoryScreen';
+import { CustomerProfileScreen } from '../screens/customer/CustomerProfileScreen';
+import { CustomerSettingsScreen } from '../screens/customer/CustomerSettingsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,28 +13,45 @@ export const CustomerNavigator = () => {
       screenOptions={{
         tabBarActiveTintColor: '#007bff',
         tabBarInactiveTintColor: 'gray',
-        headerShown: true,
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '#ffffff',
+          borderTopWidth: 1,
+          borderTopColor: '#e0e0e0',
+        },
       }}
     >
       <Tab.Screen
         name="Book"
-        component={BookScreen}
-        options={{ title: 'Book' }}
+        component={CustomerBookingScreen}
+        options={{
+          title: 'Book',
+          tabBarLabel: 'Book',
+        }}
       />
       <Tab.Screen
-        name="Appointments"
-        component={AppointmentsScreen}
-        options={{ title: 'Appointments' }}
-      />
-      <Tab.Screen
-        name="Services"
-        component={ServicesScreen}
-        options={{ title: 'Services' }}
+        name="History"
+        component={CustomerHistoryScreen}
+        options={{
+          title: 'History',
+          tabBarLabel: 'History',
+        }}
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
-        options={{ title: 'Profile' }}
+        component={CustomerProfileScreen}
+        options={{
+          title: 'Profile',
+          tabBarLabel: 'Profile',
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={CustomerSettingsScreen}
+        options={{
+          title: 'Settings',
+          tabBarLabel: 'Settings',
+        }}
       />
     </Tab.Navigator>
   );
