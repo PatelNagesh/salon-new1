@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(npm install *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'feat\\(auth\\): Enhance AuthService with JWT custom claims and secure storage *)",
+      "Bash(git commit -m 'feat\\(customer\\): Create Customer role UI screens and navigation *)"
     ]
   }
 }
