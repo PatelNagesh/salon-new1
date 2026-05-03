@@ -7,48 +7,49 @@ import { SecureStore } from 'expo-secure-store';
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || 'YOUR_SUPABASE_URL';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
 
-// Storage adapter for React Native
-const ReactNativeAsyncStorage = {
+// Secure storage adapter for React Native
+const SecureStorageAdapter = {
   getItem: async (key: string) => {
     try {
-      // Use SecureStore for sensitive data
-      if (key.includes('token') || key.includes('session')) {
+      // Use SecureStore for all authentication data
+      if (key.startsWith('supabase.auth.') || key.includes('token') || key.includes('refresh')) {
         return await SecureStore.getItemAsync(key);
       }
+      // Use AsyncStorage for non-sensitive data
       return await AsyncStorage.getItem(key);
     } catch (error) {
-      console.error('Error getting item:', error);
+      console.error('SecureStorage getItem error:', error);
       return null;
     }
   },
   setItem: async (key: string, value: string) => {
     try {
-      // Use SecureStore for sensitive data
-      if (key.includes('token') || key.includes('session')) {
+      // Use SecureStore for all authentication data
+      if (key.startsWith('supabase.auth.') || key.includes('token') || key.includes('refresh')) {
         await SecureStore.setItemAsync(key, value);
       } else {
         await AsyncStorage.setItem(key, value);
       }
     } catch (error) {
-      console.error('Error setting item:', error);
+      console.error('SecureStorage setItem error:', error);
     }
   },
   removeItem: async (key: string) => {
     try {
-      if (key.includes('token') || key.includes('session')) {
+      if (key.startsWith('supabase.auth.') || key.includes('token') || key.includes('refresh')) {
         await SecureStore.deleteItemAsync(key);
       } else {
         await AsyncStorage.removeItem(key);
       }
     } catch (error) {
-      console.error('Error removing item:', error);
+      console.error('SecureStorage removeItem error:', error);
     }
   },
 };
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: ReactNativeAsyncStorage,
+    storage: SecureStorageAdapter,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
