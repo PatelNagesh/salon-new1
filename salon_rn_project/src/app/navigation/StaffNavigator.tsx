@@ -1,61 +1,63 @@
 import React from 'react';
+import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useAuth } from '../../providers/AuthProvider';
-
-// Placeholder screens
-const ScheduleScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>My Schedule</Text>
-  </View>
-);
-
-const AppointmentsScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20 }}>Today's Appointments</Text>
-  </View>
-);
-
-const ClientsScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20 }}>My Clients</Text>
-  </View>
-);
-
-const ProfileScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20 }}>My Profile</Text>
-  </View>
-);
+import { Icon } from 'react-native-vector-icons/MaterialIcons';
+import { StaffScheduleScreen } from '../screens/staff/StaffScheduleScreen';
+import { StaffAppointmentsScreen } from '../screens/staff/StaffAppointmentsScreen';
+import { StaffClientsScreen } from '../screens/staff/StaffClientsScreen';
+import { StaffProfileScreen } from '../screens/staff/StaffProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
 export const StaffNavigator = () => {
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName: string;
+
+          switch (route.name) {
+            case 'Schedule':
+              iconName = 'schedule';
+              break;
+            case 'Appointments':
+              iconName = 'event';
+              break;
+            case 'Clients':
+              iconName = 'people';
+              break;
+            case 'Profile':
+              iconName = 'person';
+              break;
+            default:
+              iconName = 'help';
+          }
+
+          return <Icon name={iconName} size={size} color={color} />;
+        },
         tabBarActiveTintColor: '#007bff',
         tabBarInactiveTintColor: 'gray',
         headerShown: true,
-      }}
+      })}
     >
       <Tab.Screen
         name="Schedule"
-        component={ScheduleScreen}
+        component={StaffScheduleScreen}
         options={{ title: 'Schedule' }}
       />
       <Tab.Screen
         name="Appointments"
-        component={AppointmentsScreen}
+        component={StaffAppointmentsScreen}
         options={{ title: 'Appointments' }}
       />
       <Tab.Screen
         name="Clients"
-        component={ClientsScreen}
+        component={StaffClientsScreen}
         options={{ title: 'Clients' }}
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={StaffProfileScreen}
         options={{ title: 'Profile' }}
       />
     </Tab.Navigator>

@@ -1,44 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-vector-icons';
-import { useAuth } from '../../providers/AuthProvider';
-
-// Placeholder screens - implement these later
-const DashboardScreen = () => {
-  const { hasPermission } = useAuth();
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Owner Dashboard</Text>
-      {hasPermission('reports.view') && <Text>Financial Reports: ✅</Text>}
-      {hasPermission('staff.manage') && <Text>Staff Management: ✅</Text>}
-      {hasPermission('salon.manage') && <Text>Salon Settings: ✅</Text>}
-    </View>
-  );
-};
-
-const StaffScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20 }}>Staff Management</Text>
-  </View>
-);
-
-const ScheduleScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20 }}>Schedule</Text>
-  </View>
-);
-
-const ReportsScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20 }}>Reports</Text>
-  </View>
-);
-
-const SettingsScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 20 }}>Settings</Text>
-  </View>
-);
+import { Icon } from 'react-native-vector-icons/MaterialIcons';
+import { OwnerDashboardScreen } from '../screens/owner/OwnerDashboardScreen';
+import { OwnerStaffScreen } from '../screens/owner/OwnerStaffScreen';
+import { OwnerServicesScreen } from '../screens/owner/OwnerServicesScreen';
+import { OwnerReportsScreen } from '../screens/owner/OwnerReportsScreen';
+import { OwnerSettingsScreen } from '../screens/owner/OwnerSettingsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -56,8 +23,8 @@ export const OwnerNavigator = () => {
             case 'Staff':
               iconName = 'people';
               break;
-            case 'Schedule':
-              iconName = 'calendar';
+            case 'Services':
+              iconName = 'content-cut';
               break;
             case 'Reports':
               iconName = 'bar-chart';
@@ -79,27 +46,27 @@ export const OwnerNavigator = () => {
     >
       <Tab.Screen
         name="Dashboard"
-        component={DashboardScreen}
+        component={OwnerDashboardScreen}
         options={{ title: 'Dashboard' }}
       />
       <Tab.Screen
         name="Staff"
-        component={StaffScreen}
+        component={OwnerStaffScreen}
         options={{ title: 'Staff' }}
       />
       <Tab.Screen
-        name="Schedule"
-        component={ScheduleScreen}
-        options={{ title: 'Schedule' }}
+        name="Services"
+        component={OwnerServicesScreen}
+        options={{ title: 'Services' }}
       />
       <Tab.Screen
         name="Reports"
-        component={ReportsScreen}
+        component={OwnerReportsScreen}
         options={{ title: 'Reports' }}
       />
       <Tab.Screen
         name="Settings"
-        component={SettingsScreen}
+        component={OwnerSettingsScreen}
         options={{ title: 'Settings' }}
       />
     </Tab.Navigator>
