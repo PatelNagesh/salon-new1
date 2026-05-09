@@ -11,7 +11,7 @@ This document tracks the implementation progress of the salon management system 
 - ✅ Staff role UI - COMPLETE
 - ✅ Vendor role UI - COMPLETE
 - ✅ App.tsx Integration - COMPLETE
-- ❌ Authentication Hooks - PENDING
+- ✅ Authentication Hooks - COMPLETE
 - ❌ Testing Suite - PENDING
 
 ## Complete Task List
@@ -69,11 +69,11 @@ This document tracks the implementation progress of the salon management system 
 - [x] Add error boundaries
 - [x] Implement splash screen with session check
 
-#### Task #14: Create authentication hooks
-- [ ] Create useAuth hook
-- [ ] Create usePermission hook
-- [ ] Create useSalon hook
-- [ ] Add error handling for auth state
+#### Task #14: Create authentication hooks ✅
+- [x] Create useAuth hook
+- [x] Create usePermission hook
+- [x] Create useSalon hook
+- [x] Add error handling for auth state
 
 #### Task #15: Implement end-to-end testing
 - [ ] Set up testing framework (Jest, Detox)
