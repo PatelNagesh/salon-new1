@@ -1,5 +1,6 @@
 import { supabase, Database } from './supabase';
 import { UserRole, LoginCredentials, RegisterCredentials, User } from '../types/auth.types';
+import { decode as atob } from 'base-64';
 
 export class AuthService {
   // Sign up with email and password

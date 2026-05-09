@@ -8,7 +8,10 @@
       "Bash(git commit -m 'feat\\(customer\\): Create Customer role UI screens and navigation *)",
       "Bash(git commit *)",
       "Bash(npm start *)",
-      "Bash(npm test *)"
+      "Bash(npm test *)",
+      "Bash(git checkout *)",
+      "Bash(Get-ChildItem -Path \"D:\\\\Claude\\\\salon-new1\\\\salon_rn_project\" -Recurse -Directory)",
+      "Bash(Select-Object -First 200 FullName)"
     ]
   }
 }

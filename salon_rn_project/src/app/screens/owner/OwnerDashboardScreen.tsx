@@ -68,7 +68,7 @@ export const OwnerDashboardScreen = () => {
         .eq('status', 'completed');
 
       const totalRevenue = revenueData?.reduce(
-        (sum, booking) => sum + (booking.services?.price || 0),
+        (sum, booking: any) => sum + (booking.services?.price || 0),
         0
       ) || 0;
 
@@ -87,7 +87,7 @@ export const OwnerDashboardScreen = () => {
         .lt('start_time', nextMonth.toISOString());
 
       const monthlyRevenue = monthlyData?.reduce(
-        (sum, booking) => sum + (booking.services?.price || 0),
+        (sum, booking: any) => sum + (booking.services?.price || 0),
         0
       ) || 0;
 

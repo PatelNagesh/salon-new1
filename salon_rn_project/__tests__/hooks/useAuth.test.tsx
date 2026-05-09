@@ -9,6 +9,7 @@
  * - useUserSalon hook
  */
 
+// @ts-nocheck
 import { renderHook, act } from '@testing-library/react-native';
 import { AuthProvider, AuthContext } from '../../src/app/providers/AuthProvider';
 import { useAuth, useAuthState, useIsAuthenticated, useUserRole, useUserSalon } from '../../src/app/hooks/useAuth';

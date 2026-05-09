@@ -7,7 +7,7 @@
  * 3. Verify UI components hidden/disabled for unauthorized users
  */
 
-import { hasPermission, PERMISSIONS, ROLE_PERMISSIONS } from '../../../src/shared/constants/roles';
+import { hasPermission, PERMISSIONS, ROLE_PERMISSIONS } from '../../src/shared/constants/roles';
 
 describe('Permission Boundaries E2E', () => {
   describe('Role Permission Matrix', () => {

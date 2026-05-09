@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useAuth } from '../../providers/AuthProvider';
+import { useAuth } from '../providers/AuthProvider';
 
 // Placeholder screens for Super Admin
 const AdminDashboardScreen = () => (

@@ -2,7 +2,7 @@ export type UserRole = 'SUPER_ADMIN' | 'OWNER' | 'MANAGER' | 'STAFF' | 'VENDOR' 
 
 export interface User {
   id: string;
-  email: string;
+  email?: string;
   role?: UserRole;
   salonId?: string;
   // Additional user properties

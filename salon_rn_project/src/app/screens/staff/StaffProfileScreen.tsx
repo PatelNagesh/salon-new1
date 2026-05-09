@@ -7,14 +7,12 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
-  Switch,
   TextInput,
   Modal,
   Image,
 } from 'react-native';
 import { useAuth } from '../../providers/AuthProvider';
 import { supabase } from '../../../services/supabase';
-import * as SecureStore from 'expo-secure-store';
 
 interface StaffProfile {
   id: string;
@@ -44,7 +42,7 @@ interface StaffProfile {
 }
 
 export const StaffProfileScreen = () => {
-  const { user, salonId, signOut } = useAuth();
+  const { user, salonId, logout } = useAuth();
   const [profile, setProfile] = useState<StaffProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -54,7 +52,7 @@ export const StaffProfileScreen = () => {
 
   useEffect(() => {
     loadProfile();
-  }, [salonId, user?.id);
+  }, [salonId, user?.id]);
 
   const loadProfile = async () => {
     try {
@@ -107,7 +105,7 @@ export const StaffProfileScreen = () => {
         .from('staff_members')
         .update({
           bio: editingBio,
-          specialties: editingSpecialties.split(',').map(s => s.trim()).filter(Boolean),
+          specialties: editingSpecialties.split(',').map((s: string) => s.trim()).filter(Boolean),
         })
         .eq('user_id', user.id);
 
@@ -130,7 +128,7 @@ export const StaffProfileScreen = () => {
         {
           text: 'Sign Out',
           style: 'destructive',
-          onPress: signOut,
+          onPress: logout,
         },
       ]
     );
@@ -138,7 +136,7 @@ export const StaffProfileScreen = () => {
 
   const openEditModal = () => {
     if (!profile) return;
-    setEditingBio(profile.bio);
+    setEditingBio(profile.bio || '');
     setEditingSpecialties(profile.specialties.join(', '));
     setShowEditModal(true);
   };
@@ -232,7 +230,7 @@ export const StaffProfileScreen = () => {
           <View style={styles.specialtiesContainer}>
             <Text style={styles.infoLabel}>Specialties</Text>
             <View style={styles.specialtiesChips}>
-              {profile.specialties.map((specialty, index) => (
+              {profile.specialties.map((specialty: any, index: any) => (
                 <View key={index} style={styles.specialtyChip}>
                   <Text style={styles.specialtyChipText}>{specialty}</Text>
                 </View>
@@ -252,7 +250,7 @@ export const StaffProfileScreen = () => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Availability</Text>
         {profile.availability.length > 0 ? (
-          profile.availability.map((avail, index) => (
+          profile.availability.map((avail: { day_of_week: number; start_time: string; end_time: string; }, index: any) => (
             <View key={index} style={styles.availabilityRow}>
               <Text style={styles.availabilityDay}>{getDayName(avail.day_of_week)}</Text>
               <Text style={styles.availabilityTime}>
@@ -269,7 +267,7 @@ export const StaffProfileScreen = () => {
       {profile.certifications.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Certifications</Text>
-          {profile.certifications.map((cert, index) => (
+          {profile.certifications.map((cert: { name: any; issued_date: string; expiry_date: string; }, index: any) => (
             <View key={index} style={styles.certificationCard}>
               <Text style={styles.certificationName}>{cert.name}</Text>
               <Text style={styles.certificationDate}>

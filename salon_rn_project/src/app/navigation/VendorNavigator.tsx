@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { VendorInventoryScreen } from '../screens/vendor/VendorInventoryScreen';
 import { VendorOrdersScreen } from '../screens/vendor/VendorOrdersScreen';
 import { VendorProductsScreen } from '../screens/vendor/VendorProductsScreen';

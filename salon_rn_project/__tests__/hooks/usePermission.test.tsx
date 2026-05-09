@@ -8,6 +8,7 @@
  * - useRequireAnyRole hook
  */
 
+// @ts-nocheck
 import { renderHook } from '@testing-library/react-native';
 import { AuthProvider } from '../../src/app/providers/AuthProvider';
 import {

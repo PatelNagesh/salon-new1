@@ -44,7 +44,7 @@ interface VendorProfile {
 }
 
 export const VendorProfileScreen = () => {
-  const { user, salonId, signOut } = useAuth();
+  const { user, salonId, logout } = useAuth();
   const [profile, setProfile] = useState<VendorProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -114,7 +114,7 @@ export const VendorProfileScreen = () => {
         {
           text: 'Sign Out',
           style: 'destructive',
-          onPress: signOut,
+          onPress: logout,
         },
       ]
     );
@@ -122,7 +122,7 @@ export const VendorProfileScreen = () => {
 
   const openEditModal = () => {
     if (!profile) return;
-    setEditingBio(profile.bio);
+    setEditingBio(profile.bio || '');
     setEditingSpecialties(profile.specialties.join(', '));
     setShowEditModal(true);
   };

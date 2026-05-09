@@ -74,6 +74,9 @@ export const PERMISSIONS = {
   PRODUCT_EDIT: 'product.edit',
   ORDER_VIEW: 'order.view',
   ORDER_CREATE: 'order.create',
+  
+  // All
+  ALL: '*',
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];

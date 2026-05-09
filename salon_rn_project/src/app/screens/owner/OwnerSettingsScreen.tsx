@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useAuth } from '../../providers/AuthProvider';
 import { supabase } from '../../../services/supabase';
-import * as SecureStore from 'expo-secure-store';
+
 
 interface SalonSettings {
   id: string;

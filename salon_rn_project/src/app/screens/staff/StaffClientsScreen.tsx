@@ -88,9 +88,9 @@ export const StaffClientsScreen = () => {
         }
 
         // Add service to preferred services
-        if (booking.services?.name) {
-          if (!client.preferred_services.includes(booking.services.name)) {
-            client.preferred_services.push(booking.services.name);
+        if ((booking as any).services?.name) {
+          if (!client.preferred_services.includes((booking as any).services.name)) {
+            client.preferred_services.push((booking as any).services.name);
           }
         }
       });
@@ -124,7 +124,7 @@ export const StaffClientsScreen = () => {
             .eq('status', 'completed');
 
           const totalSpent = clientBookings?.reduce(
-            (sum, booking) => sum + (booking.services?.price || 0),
+            (sum, booking: any) => sum + (booking.services?.price || 0),
             0
           ) || 0;
 

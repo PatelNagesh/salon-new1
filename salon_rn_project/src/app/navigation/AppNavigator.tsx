@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useAuth } from '../../providers/AuthProvider';
+import { useAuth } from '../providers/AuthProvider';
 import { AuthNavigator } from './AuthNavigator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 

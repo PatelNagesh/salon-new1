@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { RegisterScreen } from '../screens/auth/RegisterScreen';
-import { ForgotPasswordScreen } from '../screens/auth/ForgotPasswordScreen';
-
+import { Alert, View, Text, TextInput, TouchableOpacity } from 'react-native';
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
@@ -66,17 +65,17 @@ const ForgotPasswordScreen = ({ onBackPress }: { onBackPress: () => void }) => {
 
   const handleResetPassword = async () => {
     if (!email) {
-      alert('Please enter your email');
+      Alert.alert('Error', 'Please enter your email');
       return;
     }
 
     setLoading(true);
     try {
       await resetPassword(email);
-      alert('Password reset email sent! Please check your inbox.');
+      Alert.alert('Success', 'Password reset email sent! Please check your inbox.');
       onBackPress();
     } catch (error: any) {
-      alert(error.message || 'Failed to send reset email');
+      Alert.alert('Error', error.message || 'Failed to send reset email');
     } finally {
       setLoading(false);
     }

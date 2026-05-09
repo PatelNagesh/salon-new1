@@ -75,7 +75,7 @@ export const VendorOrdersScreen = () => {
       // Transform the data to match the interface
       const transformedOrders = data?.map(order => ({
         ...order,
-        items: order.purchase_order_items.map(item => ({
+        items: order.purchase_order_items.map((item: any) => ({
           ...item,
           total_price: item.quantity * item.unit_price,
         })),

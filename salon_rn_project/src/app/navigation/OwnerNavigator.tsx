@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { OwnerDashboardScreen } from '../screens/owner/OwnerDashboardScreen';
 import { OwnerStaffScreen } from '../screens/owner/OwnerStaffScreen';
 import { OwnerServicesScreen } from '../screens/owner/OwnerServicesScreen';

@@ -2,7 +2,7 @@ import 'react-native-url-polyfill/auto';
 import { createClient } from '@supabase/supabase-js';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SecureStore } from 'expo-secure-store';
+import * as Keychain from 'react-native-keychain';
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || 'YOUR_SUPABASE_URL';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
@@ -11,9 +11,13 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 'YOUR_SUPAB
 const SecureStorageAdapter = {
   getItem: async (key: string) => {
     try {
-      // Use SecureStore for all authentication data
+      // Use Keychain for all authentication data
       if (key.startsWith('supabase.auth.') || key.includes('token') || key.includes('refresh')) {
-        return await SecureStore.getItemAsync(key);
+        const result = await Keychain.getGenericPassword({ service: key });
+        if (result) {
+          return result.password;
+        }
+        return null;
       }
       // Use AsyncStorage for non-sensitive data
       return await AsyncStorage.getItem(key);
@@ -24,9 +28,9 @@ const SecureStorageAdapter = {
   },
   setItem: async (key: string, value: string) => {
     try {
-      // Use SecureStore for all authentication data
+      // Use Keychain for all authentication data
       if (key.startsWith('supabase.auth.') || key.includes('token') || key.includes('refresh')) {
-        await SecureStore.setItemAsync(key, value);
+        await Keychain.setGenericPassword(key, value, { service: key });
       } else {
         await AsyncStorage.setItem(key, value);
       }
@@ -37,7 +41,7 @@ const SecureStorageAdapter = {
   removeItem: async (key: string) => {
     try {
       if (key.startsWith('supabase.auth.') || key.includes('token') || key.includes('refresh')) {
-        await SecureStore.deleteItemAsync(key);
+        await Keychain.resetGenericPassword({ service: key });
       } else {
         await AsyncStorage.removeItem(key);
       }

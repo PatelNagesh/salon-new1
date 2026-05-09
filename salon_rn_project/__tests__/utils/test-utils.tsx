@@ -5,7 +5,7 @@
  */
 
 import { render } from '@testing-library/react-native';
-import { AuthProvider } from '../src/app/providers/AuthProvider';
+import { AuthProvider } from '../../src/app/providers/AuthProvider';
 import { ReactElement } from 'react';
 
 /**
@@ -181,7 +181,7 @@ export const wait = (ms: number): Promise<void> =>
  * @param {T} value - The value to resolve with
  * @returns {jest.Mock} The mock function
  */
-export const mockResolvedValue = <T>(value: T): jest.Mock =>
+export const mockResolvedValue = <T,>(value: T): jest.Mock =>
   jest.fn().mockResolvedValue(value);
 
 /**

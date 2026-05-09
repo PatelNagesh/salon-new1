@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useAuth } from '../../providers/AuthProvider';
 import { supabase } from '../../../services/supabase';
-import * as SecureStore from 'expo-secure-store';
+
 
 interface Service {
   id: string;
@@ -210,7 +210,7 @@ export const CustomerBookingScreen = () => {
                   {new Date(booking.start_time).toLocaleString()}
                 </Text>
                 <Text style={styles.bookingStaff}>
-                  Staff: {booking.staff?.profiles?.first_name} {booking.staff?.profiles?.last_name}
+                  Staff: {(booking.staff as any)?.profiles?.first_name} {(booking.staff as any)?.profiles?.last_name}
                 </Text>
                 <Text style={styles.bookingPrice}>${booking.service?.price.toFixed(2)}</Text>
               </View>

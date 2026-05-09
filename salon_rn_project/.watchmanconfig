@@ -1,1 +1,18 @@
-{}
+{
+    "include": [
+        "src/**",
+        "assets/**",
+        "package.json"
+    ],
+    "exclude": [
+        "node_modules/**",
+        "node_modules/**",
+        ".yarn/**",
+        "**/node_modules/**",
+        "yarn.lock",
+        "package-lock.json",
+        "npm-debug.log",
+        ".pnpm-debug.log*",
+        ".DS_Store"
+    ]
+}

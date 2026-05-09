@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { StaffScheduleScreen } from '../screens/staff/StaffScheduleScreen';
 import { StaffAppointmentsScreen } from '../screens/staff/StaffAppointmentsScreen';
 import { StaffClientsScreen } from '../screens/staff/StaffClientsScreen';

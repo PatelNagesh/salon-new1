@@ -1,5 +1,5 @@
 import { useAuth } from './useAuth';
-import { UserRole } from '../types/auth.types';
+import { UserRole } from '../../types/auth.types';
 
 /**
  * Permission Definition

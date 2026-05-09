@@ -406,7 +406,7 @@ const getCategoryColor = (category: string) => {
     'General': '#95afc0',
     'Other': '#dfe6e9',
   };
-  return colors[category] || colors['Other'];
+  return colors[category] || colors.Other;
 };
 
 const styles = StyleSheet.create({
@@ -485,6 +485,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
     flex: 1,
+  },
+  serviceInfo: {
+    flex: 1,
+    marginRight: 16,
   },
   categoryBadge: {
     paddingHorizontal: 8,
