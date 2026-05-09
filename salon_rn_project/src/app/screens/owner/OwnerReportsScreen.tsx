@@ -67,7 +67,7 @@ export const OwnerReportsScreen = () => {
         completedAppointments: todayBookings?.filter(b => b.status === 'completed').length || 0,
         revenue: todayBookings
           ?.filter(b => b.status === 'completed')
-          .reduce((sum, b) => sum + (b.services?.price || 0), 0) || 0,
+          .reduce((sum, b: any) => sum + (b.services?.price || 0), 0) || 0,
         noShows: todayBookings?.filter(b => b.status === 'no-show').length || 0,
       };
 

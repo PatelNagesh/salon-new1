@@ -267,7 +267,7 @@ export const StaffProfileScreen = () => {
       {profile.certifications.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Certifications</Text>
-          {profile.certifications.map((cert: { name: any; issued_date: string; expiry_date: string; }, index: any) => (
+          {profile.certifications.map((cert: { name: any; issued_date: string; expiry_date?: string; }, index: any) => (
             <View key={index} style={styles.certificationCard}>
               <Text style={styles.certificationName}>{cert.name}</Text>
               <Text style={styles.certificationDate}>

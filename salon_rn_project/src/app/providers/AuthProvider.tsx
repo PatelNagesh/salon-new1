@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const salonId = AuthService.getSalonId(session);
 
           setState({
-            user: session.user,
+            user: session.user as any,
             role,
             salonId,
             loading: false,
@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const salonId = AuthService.getSalonId(session);
 
         setState({
-          user: session.user,
+          user: session.user as any,
           role,
           salonId,
           loading: false,
@@ -167,7 +167,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const salonId = AuthService.getSalonId(session);
 
         setState({
-          user: session.user,
+          user: session.user as any,
           role,
           salonId,
           loading: false,
