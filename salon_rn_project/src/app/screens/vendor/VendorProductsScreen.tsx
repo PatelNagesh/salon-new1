@@ -341,7 +341,7 @@ export const VendorProductsScreen = () => {
                   </View>
                 </View>
                 <Image
-                  source={require('../../../../../assets/default-product.png')}
+                  source={require('../../../assets/default-product.png')}
                   style={styles.productImage}
                 />
               </View>
