@@ -211,20 +211,22 @@ export const usePermission = () => {
       return false;
     }
 
+    const userRole = role as UserRole;
+
     // Check for wildcard permission (super admin)
-    if (ROLE_PERMISSIONS[role].includes('*')) {
+    if (ROLE_PERMISSIONS[userRole].includes('*')) {
       return true;
     }
 
     // Check for exact permission match
-    if (ROLE_PERMISSIONS[role].includes(permission)) {
+    if (ROLE_PERMISSIONS[userRole].includes(permission)) {
       return true;
     }
 
     // Check for wildcard resource permission (e.g., 'staff.*')
     const [resource] = permission.split('.');
     const wildcardPermission = `${resource}.*`;
-    if (ROLE_PERMISSIONS[role].includes(wildcardPermission)) {
+    if (ROLE_PERMISSIONS[userRole].includes(wildcardPermission)) {
       return true;
     }
 
@@ -290,7 +292,7 @@ export const usePermission = () => {
     if (!role) {
       return [];
     }
-    return ROLE_PERMISSIONS[role] || [];
+    return ROLE_PERMISSIONS[role as UserRole] || [];
   };
 
   /**

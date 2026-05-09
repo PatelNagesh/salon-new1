@@ -231,9 +231,11 @@ export const StaffProfileScreen = () => {
             <Text style={styles.infoLabel}>Specialties</Text>
             <View style={styles.specialtiesChips}>
               {profile.specialties.map((specialty: any, index: any) => (
-                <View key={index} style={styles.specialtyChip}>
-                  <Text style={styles.specialtyChipText}>{specialty}</Text>
-                </View>
+                <React.Fragment key={index}>
+                  <View style={styles.specialtyChip}>
+                    <Text style={styles.specialtyChipText}>{specialty}</Text>
+                  </View>
+                </React.Fragment>
               ))}
             </View>
           </View>
@@ -251,12 +253,14 @@ export const StaffProfileScreen = () => {
         <Text style={styles.sectionTitle}>Availability</Text>
         {profile.availability.length > 0 ? (
           profile.availability.map((avail: { day_of_week: number; start_time: string; end_time: string; }, index: any) => (
-            <View key={index} style={styles.availabilityRow}>
-              <Text style={styles.availabilityDay}>{getDayName(avail.day_of_week)}</Text>
-              <Text style={styles.availabilityTime}>
-                {formatTime(avail.start_time)} - {formatTime(avail.end_time)}
-              </Text>
-            </View>
+            <React.Fragment key={index}>
+              <View style={styles.availabilityRow}>
+                <Text style={styles.availabilityDay}>{getDayName(avail.day_of_week)}</Text>
+                <Text style={styles.availabilityTime}>
+                  {formatTime(avail.start_time)} - {formatTime(avail.end_time)}
+                </Text>
+              </View>
+            </React.Fragment>
           ))
         ) : (
           <Text style={styles.noAvailability}>No availability set</Text>
@@ -268,13 +272,15 @@ export const StaffProfileScreen = () => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Certifications</Text>
           {profile.certifications.map((cert: { name: any; issued_date: string; expiry_date?: string; }, index: any) => (
-            <View key={index} style={styles.certificationCard}>
-              <Text style={styles.certificationName}>{cert.name}</Text>
-              <Text style={styles.certificationDate}>
-                Issued: {formatDate(cert.issued_date)}
-                {cert.expiry_date && ` • Expires: ${formatDate(cert.expiry_date)}`}
-              </Text>
-            </View>
+            <React.Fragment key={index}>
+              <View style={styles.certificationCard}>
+                <Text style={styles.certificationName}>{cert.name}</Text>
+                <Text style={styles.certificationDate}>
+                  Issued: {formatDate(cert.issued_date)}
+                  {cert.expiry_date && ` • Expires: ${formatDate(cert.expiry_date)}`}
+                </Text>
+              </View>
+            </React.Fragment>
           ))}
         </View>
       )}

@@ -1,12 +1,15 @@
+// @ts-nocheck
 /**
  * Test Utilities
  *
  * Common utilities and helpers for testing the salon management system.
  */
 
+import React from 'react';
 import { render } from '@testing-library/react-native';
 import { AuthProvider } from '../../src/app/providers/AuthProvider';
 import { ReactElement } from 'react';
+
 
 /**
  * Custom render function that includes providers

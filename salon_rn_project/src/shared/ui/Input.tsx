@@ -18,16 +18,17 @@ interface InputProps extends TextInputProps {
   containerStyle?: ViewStyle;
 }
 
-export const Input: React.FC<InputProps> = ({
-  label,
-  error,
-  helper,
-  leftIcon,
-  rightIcon,
-  containerStyle,
-  secureTextEntry,
-  ...props
-}) => {
+export const Input: React.FC<InputProps> = (props: InputProps) => {
+  const {
+    label,
+    error,
+    helper,
+    leftIcon,
+    rightIcon,
+    containerStyle,
+    secureTextEntry,
+    ...rest
+  } = props;
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -52,7 +53,7 @@ export const Input: React.FC<InputProps> = ({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           secureTextEntry={isPassword && !showPassword}
-          {...props}
+          {...rest}
         />
 
         {isPassword && (

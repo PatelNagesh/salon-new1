@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { RegisterScreen } from '../screens/auth/RegisterScreen';
 import { Alert, View, Text, TextInput, TouchableOpacity } from 'react-native';
+
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
@@ -10,6 +11,7 @@ export type AuthStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
+
 
 export const AuthNavigator = () => {
   return (
