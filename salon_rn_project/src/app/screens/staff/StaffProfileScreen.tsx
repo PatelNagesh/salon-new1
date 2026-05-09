@@ -183,7 +183,7 @@ export const StaffProfileScreen = () => {
       <View style={styles.header}>
         <View style={styles.avatarContainer}>
           <Image
-            source={require('../../../../../assets/default-avatar.png')}
+            source={require('../../../assets/default-avatar.png')}
             style={styles.avatar}
           />
           <View style={[styles.statusBadge, profile.is_active ? styles.activeStatus : styles.inactiveStatus]}>

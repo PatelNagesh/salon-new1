@@ -74,7 +74,7 @@ export const CustomerProfileScreen = () => {
       <View style={styles.header}>
         <View style={styles.avatarContainer}>
           <Image
-            source={require('../../../../../assets/default-avatar.png')}
+            source={require('../../../assets/default-avatar.png')}
             style={styles.avatar}
           />
           <TouchableOpacity style={styles.changeAvatarButton}>

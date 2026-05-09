@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  Alert,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ActivityIndicator,
+} from 'react-native';
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { RegisterScreen } from '../screens/auth/RegisterScreen';
-import { Alert, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { useAuth } from '../providers/AuthProvider';
 
 export type AuthStackParamList = {
   Login: undefined;
@@ -11,7 +22,6 @@ export type AuthStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
-
 
 export const AuthNavigator = () => {
   return (
@@ -28,102 +38,188 @@ export const AuthNavigator = () => {
   );
 };
 
-// Wrapper components to handle navigation
-const LoginScreenWrapper = ({ navigation }: any) => {
-  const handleRegisterPress = () => navigation.navigate('Register');
-  const handleForgotPasswordPress = () => navigation.navigate('ForgotPassword');
+// ---------------------------------------------------------------------------
+// Wrapper components — handle navigation prop and pass callback props down
+// ---------------------------------------------------------------------------
 
+const LoginScreenWrapper = ({ navigation }: any) => {
   return (
     <LoginScreen
-      onRegisterPress={handleRegisterPress}
-      onForgotPasswordPress={handleForgotPasswordPress}
+      onRegisterPress={() => navigation.navigate('Register')}
+      onForgotPasswordPress={() => navigation.navigate('ForgotPassword')}
     />
   );
 };
 
 const RegisterScreenWrapper = ({ navigation }: any) => {
-  const handleLoginPress = () => navigation.navigate('Login');
-  const handleBackPress = () => navigation.goBack();
-
   return (
     <RegisterScreen
-      onLoginPress={handleLoginPress}
-      onBackPress={handleBackPress}
+      onLoginPress={() => navigation.navigate('Login')}
+      onBackPress={() => navigation.goBack()}
     />
   );
 };
 
 const ForgotPasswordScreenWrapper = ({ navigation }: any) => {
-  const handleBackPress = () => navigation.goBack();
-
-  return <ForgotPasswordScreen onBackPress={handleBackPress} />;
+  return <InlineForgotPasswordScreen onBackPress={() => navigation.goBack()} />;
 };
 
-// Placeholder ForgotPasswordScreen
-const ForgotPasswordScreen = ({ onBackPress }: { onBackPress: () => void }) => {
-  const [email, setEmail] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-  const { resetPassword } = require('../../providers/AuthProvider').useAuth();
+// ---------------------------------------------------------------------------
+// Inline ForgotPassword screen (proper hook usage — not via require)
+// ---------------------------------------------------------------------------
+
+interface ForgotPasswordProps {
+  onBackPress: () => void;
+}
+
+const InlineForgotPasswordScreen = ({ onBackPress }: ForgotPasswordProps) => {
+  const { resetPassword } = useAuth();
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleResetPassword = async () => {
-    if (!email) {
-      Alert.alert('Error', 'Please enter your email');
+    if (!email.trim()) {
+      Alert.alert('Error', 'Please enter your email address');
       return;
     }
 
     setLoading(true);
     try {
-      await resetPassword(email);
-      Alert.alert('Success', 'Password reset email sent! Please check your inbox.');
-      onBackPress();
+      await resetPassword(email.trim());
+      Alert.alert(
+        'Email Sent',
+        'A password reset link has been sent to your email. Please check your inbox.',
+        [{ text: 'OK', onPress: onBackPress }]
+      );
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to send reset email');
+      Alert.alert('Error', error.message || 'Failed to send reset email. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <View style={{ flex: 1, padding: 20, justifyContent: 'center' }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>
-        Reset Password
-      </Text>
-      <Text style={{ marginBottom: 20 }}>
-        Enter your email address and we'll send you a link to reset your password.
-      </Text>
-      <TextInput
-        style={{
-          borderWidth: 1,
-          borderColor: '#ddd',
-          borderRadius: 8,
-          padding: 12,
-          marginBottom: 20,
-          fontSize: 16,
-        }}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Enter your email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TouchableOpacity
-        style={{
-          backgroundColor: '#007bff',
-          padding: 14,
-          borderRadius: 8,
-          alignItems: 'center',
-          marginBottom: 20,
-        }}
-        onPress={handleResetPassword}
-        disabled={loading}
-      >
-        <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
-          {loading ? 'Sending...' : 'Send Reset Email'}
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View style={styles.content}>
+        <Text style={styles.title}>Reset Password</Text>
+        <Text style={styles.subtitle}>
+          Enter your email address and we'll send you a link to reset your password.
         </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={onBackPress}>
-        <Text style={{ color: '#007bff', textAlign: 'center' }}>Back to Login</Text>
-      </TouchableOpacity>
-    </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Email Address</Text>
+          <TextInput
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Enter your email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoComplete="email"
+            editable={!loading}
+          />
+        </View>
+
+        <TouchableOpacity
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleResetPassword}
+          disabled={loading}
+          activeOpacity={0.8}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Send Reset Email</Text>
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={onBackPress}
+          disabled={loading}
+        >
+          <Text style={styles.backButtonText}>← Back to Login</Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f8f9fa',
+  },
+  content: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#1a1a2e',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 15,
+    color: '#6c757d',
+    textAlign: 'center',
+    marginBottom: 32,
+    lineHeight: 22,
+  },
+  inputGroup: {
+    marginBottom: 24,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 8,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#dee2e6',
+    borderRadius: 10,
+    padding: 14,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    color: '#333',
+  },
+  button: {
+    backgroundColor: '#007bff',
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 16,
+    shadowColor: '#007bff',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  buttonDisabled: {
+    backgroundColor: '#6c757d',
+    shadowOpacity: 0,
+    elevation: 0,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  backButton: {
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  backButtonText: {
+    color: '#007bff',
+    fontSize: 15,
+    fontWeight: '500',
+  },
+});
