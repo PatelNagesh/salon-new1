@@ -11,7 +11,16 @@
       "Bash(npm test *)",
       "Bash(git checkout *)",
       "Bash(Get-ChildItem -Path \"D:\\\\Claude\\\\salon-new1\\\\salon_rn_project\" -Recurse -Directory)",
-      "Bash(Select-Object -First 200 FullName)"
+      "Bash(Select-Object -First 200 FullName)",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__get_project_url",
+      "mcp__supabase__list_migrations",
+      "Bash(supabase projects *)",
+      "mcp__supabase__get_publishable_keys"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
 }
