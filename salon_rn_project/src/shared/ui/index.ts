@@ -7,3 +7,4 @@ export * from './RealtimeIndicator';
 export * from './LiveBookingIndicator';
 export * from './LiveOrderIndicator';
 export * from './LiveInventoryIndicator';
+export * from './PermissionGuard';

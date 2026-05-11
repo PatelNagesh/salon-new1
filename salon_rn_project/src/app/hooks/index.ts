@@ -21,7 +21,16 @@ export {
   useRequirePermission,
   useRequireRole,
   useRequireAnyRole,
-} from './usePermission';
+  useRole,
+  useCanAccessRoute,
+  useAccessibleRoutes,
+  useIsSuperAdmin,
+  useIsSalonOwner,
+  useIsStaff,
+  useIsCustomer,
+  useHasAnyPermission,
+  useHasAllPermissions,
+} from './usePermissions';
 
 /**
  * Salon Hooks
