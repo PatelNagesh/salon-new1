@@ -84,13 +84,13 @@
   - **Status**: ✅ Completed
   - **Commit**: 277380f
 
-- [ ] **Task #10**: Implement staff management features
+- [x] **Task #10**: Implement staff management features
   - Implement staff schedule management
   - Add staff performance tracking
   - Implement commission calculation
   - Add staff availability checking
-  - **Status**: Pending
-  - **Commit**: N/A
+  - **Status**: ✅ Completed
+  - **Commit**: 7dbc405
 
 - [ ] **Task #18**: Implement inventory management features
   - Implement low stock alerts
@@ -145,17 +145,19 @@
 ## Progress Summary
 
 **Total Tasks**: 15
-**Completed**: 8
+**Completed**: 9
 **In Progress**: 0
-**Pending**: 7
+**Pending**: 6
 
-**Completion Percentage**: 53%
+**Completion Percentage**: 60%
 
 ## Recent Commits
 
+- `7dbc405` - phase-6-task-10: implement staff management features
 - `277380f` - phase-6-task-14: implement customer management features
 - `4671dec` - phase-6-task-4: implement booking flow logic
 - `3bf6ff1` - docs(phase-6): update implementation tracker - Task #4 completed
+- `17b27e0` - docs(phase-6): update implementation tracker - Task #14 completed
 - `074dc23` - phase-6-task-17: update UI components with real-time features
 - `9e38abc` - phase-6-task-9: create real-time React hooks
 - `2cb8e94` - phase-6-task-5: update screens with database integration
@@ -172,6 +174,6 @@
 
 ## Next Steps
 
-**Current Task**: Task #10 - Implement staff management features
+**Current Task**: Task #18 - Implement inventory management features
 
-**Starting Implementation**: Implementing staff schedule management, performance tracking, commission calculation, and availability checking
+**Starting Implementation**: Implementing low stock alerts, automatic reorder suggestions, inventory tracking, and stock adjustment logging
