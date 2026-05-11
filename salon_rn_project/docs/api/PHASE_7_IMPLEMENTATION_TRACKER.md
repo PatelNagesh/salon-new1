@@ -273,3 +273,20 @@ API/
 - [ ] Performance optimized
 - [ ] Ready for code review
 - [ ] Ready for QA testing
+
+
+// remiang files and code that not genrated to the project just write inside the clis so genrate those codes to the project
+\API\src\constants\role.constants.ts
+IServiceRepository.ts
+IProductRepository.ts
+IOrderRepository.ts
+SalonRepository.ts
+StaffRepository.ts
+StaffRepository.ts
+VendorRepository.ts
+InventoryRepository.ts
+
+\API\src\services\interfaces\IBookingFlowService.ts
+IStaffManagementService.ts
+IRoleService.ts
+AuthService.ts
