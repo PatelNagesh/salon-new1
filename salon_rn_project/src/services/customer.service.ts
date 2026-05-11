@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { CustomerService as DatabaseCustomerService } from './database';
 
 export interface Customer {
   id: string;
@@ -32,116 +33,141 @@ export interface CustomerCreate {
 
 export class CustomerService {
   static async getSalonCustomers(salonId: string): Promise<Customer[]> {
-    const { data, error } = await supabase
-      .from('customers')
-      .select(`
-        *,
-        profiles(first_name, last_name, email, phone, avatar_url)
-      `)
-      .eq('salon_id', salonId)
-      .order('created_at', { ascending: false });
+    try {
+      const { data, error } = await supabase
+        .from('customers')
+        .select(`
+          *,
+          profiles(first_name, last_name, email, phone, avatar_url)
+        `)
+        .eq('salon_id', salonId)
+        .order('created_at', { ascending: false });
 
-    if (error) throw error;
-    return data || [];
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error getting salon customers:', error);
+      throw error;
+    }
   }
 
   static async getCustomerById(customerId: string): Promise<Customer> {
-    const { data, error } = await supabase
-      .from('customers')
-      .select(`
-        *,
-        profiles(first_name, last_name, email, phone, avatar_url)
-      `)
-      .eq('id', customerId)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('customers')
+        .select(`
+          *,
+          profiles(first_name, last_name, email, phone, avatar_url)
+        `)
+        .eq('id', customerId)
+        .single();
 
-    if (error) throw error;
-    return data;
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error getting customer by ID:', error);
+      throw error;
+    }
   }
 
   static async createCustomer(
     salonId: string,
     customerData: CustomerCreate
   ): Promise<Customer> {
-    // Create auth user
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: customerData.email,
-      password: generateTempPassword(),
-      options: {
-        data: {
-          first_name: customerData.firstName,
-          last_name: customerData.lastName,
+    try {
+      // Create auth user
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: customerData.email,
+        password: generateTempPassword(),
+        options: {
+          data: {
+            first_name: customerData.firstName,
+            last_name: customerData.lastName,
+          },
         },
-      },
-    });
+      });
 
-    if (authError) throw authError;
-    if (!authData.user) throw new Error('Failed to create user');
+      if (authError) throw authError;
+      if (!authData.user) throw new Error('Failed to create user');
 
-    // Create customer record
-    const { data: customer, error: customerError } = await supabase
-      .from('customers')
-      .insert({
+      // Create customer record
+      const { data: customer, error: customerError } = await supabase
+        .from('customers')
+        .insert({
+          user_id: authData.user.id,
+          salon_id: salonId,
+          birthday: customerData.birthday,
+          referral_source: customerData.referralSource,
+          total_spent: 0,
+          visit_count: 0,
+        })
+        .select()
+        .single();
+
+      if (customerError) throw customerError;
+
+      // Update role
+      await supabase.rpc('update_user_role', {
         user_id: authData.user.id,
+        new_role: 'CUSTOMER',
         salon_id: salonId,
-        birthday: customerData.birthday,
-        referral_source: customerData.referralSource,
-        total_spent: 0,
-        visit_count: 0,
-      })
-      .select()
-      .single();
+      });
 
-    if (customerError) throw customerError;
-
-    // Update role
-    await supabase.rpc('update_user_role', {
-      user_id: authData.user.id,
-      new_role: 'CUSTOMER',
-      salon_id: salonId,
-    });
-
-    return customer;
+      return customer;
+    } catch (error) {
+      console.error('Error creating customer:', error);
+      throw error;
+    }
   }
 
   static async updateCustomer(
     customerId: string,
     updates: Partial<Customer>
   ): Promise<Customer> {
-    const { data, error } = await supabase
-      .from('customers')
-      .update({ ...updates, updated_at: new Date().toISOString() })
-      .eq('id', customerId)
-      .select()
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('customers')
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', customerId)
+        .select()
+        .single();
 
-    if (error) throw error;
-    return data;
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error updating customer:', error);
+      throw error;
+    }
   }
 
   static async addCustomerNote(
     customerId: string,
     note: string
   ): Promise<Customer> {
-    const { data: customer, error: fetchError } = await supabase
-      .from('customers')
-      .select('notes')
-      .eq('id', customerId)
-      .single();
+    try {
+      const { data: customer, error: fetchError } = await supabase
+        .from('customers')
+        .select('notes')
+        .eq('id', customerId)
+        .single();
 
-    if (fetchError) throw fetchError;
+      if (fetchError) throw fetchError;
 
-    const newNotes = customer.notes ? `${customer.notes}\n${note}` : note;
+      const newNotes = customer.notes ? `${customer.notes}\n${note}` : note;
 
-    const { data, error } = await supabase
-      .from('customers')
-      .update({ notes: newNotes, updated_at: new Date().toISOString() })
-      .eq('id', customerId)
-      .select()
-      .single();
+      const { data, error } = await supabase
+        .from('customers')
+        .update({ notes: newNotes, updated_at: new Date().toISOString() })
+        .eq('id', customerId)
+        .select()
+        .single();
 
-    if (error) throw error;
-    return data;
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error adding customer note:', error);
+      throw error;
+    }
   }
 
   static async getCustomerHistory(
@@ -152,58 +178,73 @@ export class CustomerService {
     totalSpent: number;
     visitCount: number;
   }> {
-    const { data: bookings, error } = await supabase
-      .from('bookings')
-      .select(`
-        *,
-        service:services(name, price, duration),
-        staff:staff_members(profiles(first_name, last_name))
-      `)
-      .eq('customer_id', customerId)
-      .order('start_time', { ascending: false })
-      .limit(limit);
+    try {
+      const { data: bookings, error } = await supabase
+        .from('bookings')
+        .select(`
+          *,
+          service:services(name, price, duration),
+          staff:staff_members(profiles(first_name, last_name))
+        `)
+        .eq('customer_id', customerId)
+        .order('start_time', { ascending: false })
+        .limit(limit);
 
-    if (error) throw error;
+      if (error) throw error;
 
-    const totalSpent = bookings
-      ?.filter((b) => b.status === 'completed')
-      .reduce((sum, b) => sum + (b.total_price || 0), 0) || 0;
+      const totalSpent = bookings
+        ?.filter((b) => b.status === 'completed')
+        .reduce((sum, b) => sum + (b.total_price || 0), 0) || 0;
 
-    const visitCount =
-      bookings?.filter((b) => b.status === 'completed').length || 0;
+      const visitCount =
+        bookings?.filter((b) => b.status === 'completed').length || 0;
 
-    return {
-      bookings: bookings || [],
-      totalSpent,
-      visitCount,
-    };
+      return {
+        bookings: bookings || [],
+        totalSpent,
+        visitCount,
+      };
+    } catch (error) {
+      console.error('Error getting customer history:', error);
+      throw error;
+    }
   }
 
   static async deleteCustomer(customerId: string): Promise<void> {
-    const { error } = await supabase
-      .from('customers')
-      .delete()
-      .eq('id', customerId);
+    try {
+      const { error } = await supabase
+        .from('customers')
+        .delete()
+        .eq('id', customerId);
 
-    if (error) throw error;
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error deleting customer:', error);
+      throw error;
+    }
   }
 
   static async getTopCustomers(
     salonId: string,
     limit = 10
   ): Promise<Customer[]> {
-    const { data, error } = await supabase
-      .from('customers')
-      .select(`
-        *,
-        profiles(first_name, last_name, email, phone)
-      `)
-      .eq('salon_id', salonId)
-      .order('total_spent', { ascending: false })
-      .limit(limit);
+    try {
+      const { data, error } = await supabase
+        .from('customers')
+        .select(`
+          *,
+          profiles(first_name, last_name, email, phone)
+        `)
+        .eq('salon_id', salonId)
+        .order('total_spent', { ascending: false })
+        .limit(limit);
 
-    if (error) throw error;
-    return data || [];
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error getting top customers:', error);
+      throw error;
+    }
   }
 }
 

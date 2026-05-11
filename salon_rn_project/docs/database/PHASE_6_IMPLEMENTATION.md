@@ -17,7 +17,7 @@
   - **Status**: ✅ Completed
   - **Commit**: 5225820
 
-- [ ] **Task #6**: Create database service layer
+- [x] **Task #6**: Create database service layer
   - Create src/services/database/ directory structure
   - Implement ProfileService.ts
   - Implement SalonService.ts
@@ -29,15 +29,15 @@
   - Implement ProductService.ts
   - Implement InventoryService.ts
   - Implement OrderService.ts
-  - **Status**: 🔄 In Progress
-  - **Commit**: N/A
+  - **Status**: ✅ Completed
+  - **Commit**: 008de6a
 
 - [ ] **Task #5**: Update screens with database integration
   - Update all screens to use new service layer
   - Replace mock data with real database calls
   - Add loading states and error handling
   - Implement optimistic updates
-  - **Status**: Pending
+  - **Status**: 🔄 In Progress
   - **Commit**: N/A
 
 ### Real-Time Features
@@ -145,14 +145,15 @@
 ## Progress Summary
 
 **Total Tasks**: 15
-**Completed**: 1
+**Completed**: 2
 **In Progress**: 1
-**Pending**: 13
+**Pending**: 12
 
-**Completion Percentage**: 7%
+**Completion Percentage**: 13%
 
 ## Recent Commits
 
+- `008de6a` - phase-6-task-6: create database service layer
 - `5225820` - phase-6-task-7: configure Supabase client and authentication
 - `0be82de` - feat(branch): create phase-6-app-integration branch
 
@@ -165,6 +166,6 @@
 
 ## Next Steps
 
-**Current Task**: Task #6 - Create database service layer
+**Current Task**: Task #5 - Update screens with database integration
 
-**Starting Implementation**: Creating service classes for all database entities
+**Starting Implementation**: Updating screens to use new service layer

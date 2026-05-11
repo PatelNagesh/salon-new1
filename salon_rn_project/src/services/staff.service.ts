@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { StaffService as DatabaseStaffService } from './database';
 
 export interface StaffMember {
   id: string;
@@ -42,32 +43,42 @@ export interface CreateStaffInput {
 
 export class StaffService {
   static async getSalonStaff(salonId: string): Promise<StaffMember[]> {
-    const { data, error } = await supabase
-      .from('staff_members')
-      .select(`
-        *,
-        profiles(first_name, last_name, email, phone, avatar_url)
-      `)
-      .eq('salon_id', salonId)
-      .eq('is_active', true)
-      .order('hire_date', { ascending: false });
+    try {
+      const { data, error } = await supabase
+        .from('staff_members')
+        .select(`
+          *,
+          profiles(first_name, last_name, email, phone, avatar_url)
+        `)
+        .eq('salon_id', salonId)
+        .eq('is_active', true)
+        .order('hire_date', { ascending: false });
 
-    if (error) throw error;
-    return data || [];
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error getting salon staff:', error);
+      throw error;
+    }
   }
 
   static async getStaffById(staffId: string): Promise<StaffMember> {
-    const { data, error } = await supabase
-      .from('staff_members')
-      .select(`
-        *,
-        profiles(first_name, last_name, email, phone, avatar_url)
-      `)
-      .eq('id', staffId)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('staff_members')
+        .select(`
+          *,
+          profiles(first_name, last_name, email, phone, avatar_url)
+        `)
+        .eq('id', staffId)
+        .single();
 
-    if (error) throw error;
-    return data;
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error getting staff by ID:', error);
+      throw error;
+    }
   }
 
   static async createStaff(
@@ -75,113 +86,138 @@ export class StaffService {
     ownerId: string,
     staffData: CreateStaffInput
   ): Promise<StaffMember> {
-    // Create auth user
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: staffData.email,
-      password: generateTempPassword(),
-      options: {
-        data: {
-          first_name: staffData.firstName,
-          last_name: staffData.lastName,
+    try {
+      // Create auth user
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: staffData.email,
+        password: generateTempPassword(),
+        options: {
+          data: {
+            first_name: staffData.firstName,
+            last_name: staffData.lastName,
+          },
         },
-      },
-    });
+      });
 
-    if (authError) throw authError;
-    if (!authData.user) throw new Error('Failed to create user');
+      if (authError) throw authError;
+      if (!authData.user) throw new Error('Failed to create user');
 
-    // Create staff member record
-    const { data: staffMember, error: staffError } = await supabase
-      .from('staff_members')
-      .insert({
+      // Create staff member record
+      const { data: staffMember, error: staffError } = await supabase
+        .from('staff_members')
+        .insert({
+          user_id: authData.user.id,
+          salon_id: salonId,
+          role: staffData.role,
+          hourly_rate: staffData.hourlyRate,
+          commission_rate: staffData.commissionRate,
+          is_active: true,
+          hire_date: new Date().toISOString(),
+        })
+        .select()
+        .single();
+
+      if (staffError) throw staffError;
+
+      // Update role
+      await supabase.rpc('update_user_role', {
         user_id: authData.user.id,
+        new_role: staffData.role,
         salon_id: salonId,
-        role: staffData.role,
-        hourly_rate: staffData.hourlyRate,
-        commission_rate: staffData.commissionRate,
-        is_active: true,
-        hire_date: new Date().toISOString(),
-      })
-      .select()
-      .single();
+      });
 
-    if (staffError) throw staffError;
-
-    // Update role
-    await supabase.rpc('update_user_role', {
-      user_id: authData.user.id,
-      new_role: staffData.role,
-      salon_id: salonId,
-    });
-
-    return staffMember;
+      return staffMember;
+    } catch (error) {
+      console.error('Error creating staff:', error);
+      throw error;
+    }
   }
 
   static async updateStaff(
     staffId: string,
     updates: Partial<StaffMember>
   ): Promise<StaffMember> {
-    const { data, error } = await supabase
-      .from('staff_members')
-      .update({ ...updates, updated_at: new Date().toISOString() })
-      .eq('id', staffId)
-      .select()
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('staff_members')
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', staffId)
+        .select()
+        .single();
 
-    if (error) throw error;
-    return data;
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error updating staff:', error);
+      throw error;
+    }
   }
 
   static async deactivateStaff(staffId: string): Promise<StaffMember> {
-    const { data, error } = await supabase
-      .from('staff_members')
-      .update({
-        is_active: false,
-        termination_date: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', staffId)
-      .select()
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('staff_members')
+        .update({
+          is_active: false,
+          termination_date: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', staffId)
+        .select()
+        .single();
 
-    if (error) throw error;
-    return data;
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error deactivating staff:', error);
+      throw error;
+    }
   }
 
   static async getStaffSchedule(staffId: string): Promise<StaffSchedule[]> {
-    const { data, error } = await supabase
-      .from('staff_schedule')
-      .select('*')
-      .eq('staff_member_id', staffId)
-      .order('day_of_week');
+    try {
+      const { data, error } = await supabase
+        .from('staff_schedule')
+        .select('*')
+        .eq('staff_member_id', staffId)
+        .order('day_of_week');
 
-    if (error) throw error;
-    return data || [];
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error getting staff schedule:', error);
+      throw error;
+    }
   }
 
   static async updateStaffSchedule(
     staffId: string,
     schedule: Partial<StaffSchedule>[]
   ): Promise<StaffSchedule[]> {
-    // Delete existing schedule
-    await supabase
-      .from('staff_schedule')
-      .delete()
-      .eq('staff_member_id', staffId);
+    try {
+      // Delete existing schedule
+      await supabase
+        .from('staff_schedule')
+        .delete()
+        .eq('staff_member_id', staffId);
 
-    // Insert new schedule
-    const scheduleWithStaff = schedule.map((s) => ({
-      ...s,
-      staff_member_id: staffId,
-    }));
+      // Insert new schedule
+      const scheduleWithStaff = schedule.map((s) => ({
+        ...s,
+        staff_member_id: staffId,
+      }));
 
-    const { data, error } = await supabase
-      .from('staff_schedule')
-      .insert(scheduleWithStaff)
-      .select();
+      const { data, error } = await supabase
+        .from('staff_schedule')
+        .insert(scheduleWithStaff)
+        .select();
 
-    if (error) throw error;
-    return data || [];
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error updating staff schedule:', error);
+      throw error;
+    }
   }
 
   static async getStaffPerformance(
@@ -194,27 +230,32 @@ export class StaffService {
     totalRevenue: number;
     averageRating: number;
   }> {
-    // Get bookings
-    const { data: bookings } = await supabase
-      .from('bookings')
-      .select('total_price, status')
-      .eq('staff_member_id', staffId)
-      .gte('start_time', startDate)
-      .lte('start_time', endDate);
+    try {
+      // Get bookings
+      const { data: bookings } = await supabase
+        .from('bookings')
+        .select('total_price, status')
+        .eq('staff_member_id', staffId)
+        .gte('start_time', startDate)
+        .lte('start_time', endDate);
 
-    const totalBookings = bookings?.length || 0;
-    const completedBookings =
-      bookings?.filter((b) => b.status === 'completed').length || 0;
-    const totalRevenue = bookings
-      ?.filter((b) => b.status === 'completed')
-      .reduce((sum, b) => sum + (b.total_price || 0), 0) || 0;
+      const totalBookings = bookings?.length || 0;
+      const completedBookings =
+        bookings?.filter((b) => b.status === 'completed').length || 0;
+      const totalRevenue = bookings
+        ?.filter((b) => b.status === 'completed')
+        .reduce((sum, b) => sum + (b.total_price || 0), 0) || 0;
 
-    return {
-      totalBookings,
-      completedBookings,
-      totalRevenue,
-      averageRating: 0, // Would come from reviews table
-    };
+      return {
+        totalBookings,
+        completedBookings,
+        totalRevenue,
+        averageRating: 0, // Would come from reviews table
+      };
+    } catch (error) {
+      console.error('Error getting staff performance:', error);
+      throw error;
+    }
   }
 }
 
