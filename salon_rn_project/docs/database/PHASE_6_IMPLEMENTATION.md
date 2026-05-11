@@ -76,13 +76,13 @@
   - **Status**: ✅ Completed
   - **Commit**: 4671dec
 
-- [ ] **Task #14**: Implement customer management features
+- [x] **Task #14**: Implement customer management features
   - Implement customer statistics tracking
   - Add visit history display
   - Implement customer notes
   - Add referral tracking
-  - **Status**: Pending
-  - **Commit**: N/A
+  - **Status**: ✅ Completed
+  - **Commit**: 277380f
 
 - [ ] **Task #10**: Implement staff management features
   - Implement staff schedule management
@@ -145,15 +145,17 @@
 ## Progress Summary
 
 **Total Tasks**: 15
-**Completed**: 7
+**Completed**: 8
 **In Progress**: 0
-**Pending**: 8
+**Pending**: 7
 
-**Completion Percentage**: 47%
+**Completion Percentage**: 53%
 
 ## Recent Commits
 
+- `277380f` - phase-6-task-14: implement customer management features
 - `4671dec` - phase-6-task-4: implement booking flow logic
+- `3bf6ff1` - docs(phase-6): update implementation tracker - Task #4 completed
 - `074dc23` - phase-6-task-17: update UI components with real-time features
 - `9e38abc` - phase-6-task-9: create real-time React hooks
 - `2cb8e94` - phase-6-task-5: update screens with database integration
@@ -170,6 +172,6 @@
 
 ## Next Steps
 
-**Current Task**: Task #14 - Implement customer management features
+**Current Task**: Task #10 - Implement staff management features
 
-**Starting Implementation**: Implementing customer statistics tracking, visit history, customer notes, and referral tracking
+**Starting Implementation**: Implementing staff schedule management, performance tracking, commission calculation, and availability checking
