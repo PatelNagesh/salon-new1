@@ -4,3 +4,5 @@ export * from './booking.service';
 export * from './salon.service';
 export * from './staff.service';
 export * from './customer.service';
+export * from './realtime.service';
+export * from './database';

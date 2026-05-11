@@ -32,13 +32,13 @@
   - **Status**: ✅ Completed
   - **Commit**: 008de6a
 
-- [ ] **Task #5**: Update screens with database integration
+- [x] **Task #5**: Update screens with database integration
   - Update all screens to use new service layer
   - Replace mock data with real database calls
   - Add loading states and error handling
   - Implement optimistic updates
-  - **Status**: 🔄 In Progress
-  - **Commit**: N/A
+  - **Status**: ✅ Completed
+  - **Commit**: 2cb8e94
 
 ### Real-Time Features
 
@@ -48,7 +48,7 @@
   - Enable Realtime on orders table
   - Configure channel subscriptions
   - Implement connection state management
-  - **Status**: Pending
+  - **Status**: 🔄 In Progress
   - **Commit**: N/A
 
 - [ ] **Task #9**: Create real-time React hooks
@@ -145,14 +145,15 @@
 ## Progress Summary
 
 **Total Tasks**: 15
-**Completed**: 2
+**Completed**: 3
 **In Progress**: 1
-**Pending**: 12
+**Pending**: 11
 
-**Completion Percentage**: 13%
+**Completion Percentage**: 20%
 
 ## Recent Commits
 
+- `2cb8e94` - phase-6-task-5: update screens with database integration
 - `008de6a` - phase-6-task-6: create database service layer
 - `5225820` - phase-6-task-7: configure Supabase client and authentication
 - `0be82de` - feat(branch): create phase-6-app-integration branch
@@ -166,6 +167,6 @@
 
 ## Next Steps
 
-**Current Task**: Task #5 - Update screens with database integration
+**Current Task**: Task #15 - Set up Supabase Realtime
 
-**Starting Implementation**: Updating screens to use new service layer
+**Starting Implementation**: Enabling Realtime on database tables
