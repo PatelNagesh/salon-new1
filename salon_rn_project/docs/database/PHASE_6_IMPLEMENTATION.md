@@ -42,28 +42,28 @@
 
 ### Real-Time Features
 
-- [ ] **Task #15**: Set up Supabase Realtime
+- [x] **Task #15**: Set up Supabase Realtime
   - Enable Realtime on bookings table
   - Enable Realtime on inventory table
   - Enable Realtime on orders table
   - Configure channel subscriptions
   - Implement connection state management
-  - **Status**: 🔄 In Progress
-  - **Commit**: N/A
+  - **Status**: ✅ Completed
+  - **Commit**: 9e38abc
 
-- [ ] **Task #9**: Create real-time React hooks
+- [x] **Task #9**: Create real-time React hooks
   - Create useBookingsRealtime() hook
   - Create useInventoryRealtime() hook
   - Create useOrdersRealtime() hook
-  - **Status**: Pending
-  - **Commit**: N/A
+  - **Status**: ✅ Completed
+  - **Commit**: 9e38abc
 
 - [ ] **Task #17**: Update UI components with real-time features
   - Add real-time indicators to screens
   - Implement live booking availability
   - Show inventory level changes instantly
   - Add notification badges
-  - **Status**: Pending
+  - **Status**: 🔄 In Progress
   - **Commit**: N/A
 
 ### Business Logic
@@ -145,14 +145,15 @@
 ## Progress Summary
 
 **Total Tasks**: 15
-**Completed**: 3
+**Completed**: 5
 **In Progress**: 1
-**Pending**: 11
+**Pending**: 9
 
-**Completion Percentage**: 20%
+**Completion Percentage**: 33%
 
 ## Recent Commits
 
+- `9e38abc` - phase-6-task-9: create real-time React hooks
 - `2cb8e94` - phase-6-task-5: update screens with database integration
 - `008de6a` - phase-6-task-6: create database service layer
 - `5225820` - phase-6-task-7: configure Supabase client and authentication
@@ -167,6 +168,6 @@
 
 ## Next Steps
 
-**Current Task**: Task #15 - Set up Supabase Realtime
+**Current Task**: Task #17 - Update UI components with real-time features
 
-**Starting Implementation**: Enabling Realtime on database tables
+**Starting Implementation**: Adding real-time indicators and live updates to screens

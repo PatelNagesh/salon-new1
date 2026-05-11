@@ -35,6 +35,18 @@ export {
 } from './useSalon';
 
 /**
+ * Realtime Hooks
+ *
+ * Provides real-time data synchronization for bookings, inventory, and orders.
+ */
+export {
+  useBookingsRealtime,
+  useInventoryRealtime,
+  useOrdersRealtime,
+  useRealtimeConnection,
+} from './useRealtime';
+
+/**
  * Types
  *
  * Re-export types for convenience.
