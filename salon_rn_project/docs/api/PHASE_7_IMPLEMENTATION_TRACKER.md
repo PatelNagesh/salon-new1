@@ -60,14 +60,14 @@
 
 ### API Layer
 
-- [ ] **Task #6**: Controller Layer
+- [x] **Task #6**: Controller Layer
   - Create controller interfaces for all endpoints
   - Implement controller classes
   - Add request/response validation
   - Add middleware integration
   - Create controller tests
-  - **Status**: Pending
-  - **Commit**: N/A
+  - **Status**: ✅ Completed
+  - **Commit**: cc10d2b
 
 - [ ] **Task #7**: DTO Layer
   - Create request DTOs for all entities
