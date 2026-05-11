@@ -7,87 +7,107 @@ export class AuthService {
   static async signUp(credentials: RegisterCredentials) {
     const { email, password, role, salonName } = credentials;
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          user_role: role,
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            user_role: role,
+          },
         },
-      },
-    });
+      });
 
-    if (error) throw error;
+      if (error) throw error;
 
-    // Wait for the trigger to create the profile and default role
-    if (data.user) {
-      // Update the user role using our secure function
-      let salonId = null;
+      // Wait for the trigger to create the profile and default role
+      if (data.user) {
+        // Update the user role using our secure function
+        let salonId = null;
 
-      // If owner, create salon first
-      if (role === 'OWNER' && salonName) {
-        const { data: salonData, error: salonError } = await supabase.rpc('create_owner_salon', {
-          salon_name: salonName,
-          owner_user_id: data.user.id
-        });
+        // If owner, create salon first
+        if (role === 'OWNER' && salonName) {
+          const { data: salonData, error: salonError } = await supabase.rpc('create_owner_salon', {
+            salon_name: salonName,
+            owner_user_id: data.user.id
+          });
 
-        if (salonError) throw salonError;
-        salonId = salonData;
+          if (salonError) throw salonError;
+          salonId = salonData;
+        }
+
+        // Update user role
+        if (role !== 'CUSTOMER') {
+          const { error: updateError } = await supabase.rpc('update_user_role', {
+            user_id: data.user.id,
+            new_role: role,
+            salon_id: salonId
+          });
+
+          if (updateError) throw updateError;
+        }
       }
 
-      // Update user role
-      if (role !== 'CUSTOMER') {
-        const { error: updateError } = await supabase.rpc('update_user_role', {
-          user_id: data.user.id,
-          new_role: role,
-          salon_id: salonId
-        });
-
-        if (updateError) throw updateError;
-      }
+      return data;
+    } catch (error) {
+      console.error('Sign up error:', error);
+      throw error;
     }
-
-    return data;
   }
 
   // Sign in with email and password
   static async signIn(credentials: LoginCredentials) {
     const { email, password, role } = credentials;
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) throw error;
+      if (error) throw error;
 
-    // Update role if different
-    if (role && data.user) {
-      const { error: updateError } = await supabase
-        .from('user_roles')
-        .update({
-          role,
-          updated_at: new Date().toISOString()
-        })
-        .eq('user_id', data.user.id);
+      // Update role if different
+      if (role && data.user) {
+        const { error: updateError } = await supabase
+          .from('user_roles')
+          .update({
+            role,
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', data.user.id);
 
-      if (updateError) console.warn('Role update failed:', updateError);
+        if (updateError) console.warn('Role update failed:', updateError);
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Sign in error:', error);
+      throw error;
     }
-
-    return data;
   }
 
   // Sign out
   static async signOut() {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    } catch (error) {
+      console.error('Sign out error:', error);
+      throw error;
+    }
   }
 
   // Get current session
   static async getSession() {
-    const { data: { session }, error } = await supabase.auth.getSession();
-    if (error) throw error;
-    return session;
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) throw error;
+      return session;
+    } catch (error) {
+      console.error('Get session error:', error);
+      throw error;
+    }
   }
 
   // Get user role from JWT with better parsing
@@ -133,37 +153,52 @@ export class AuthService {
 
   // Reset password
   static async resetPassword(email: string) {
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
-    if (error) throw error;
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      if (error) throw error;
+    } catch (error) {
+      console.error('Reset password error:', error);
+      throw error;
+    }
   }
 
   // Update password
   static async updatePassword(newPassword: string) {
-    const { error } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
-    if (error) throw error;
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error('Update password error:', error);
+      throw error;
+    }
   }
 
   // Get user profile
   static async getUserProfile(userId: string) {
-    const { data, error } = await supabase
-      .from('user_roles')
-      .select(`
-        *,
-        salon: salons(id, name)
-      `)
-      .eq('user_id', userId)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select(`
+          *,
+          salon: salons(id, name)
+        `)
+        .eq('user_id', userId)
+        .single();
 
-    if (error) throw error;
-    return data;
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Get user profile error:', error);
+      throw error;
+    }
   }
 
   // Check if user has specific permission using database function
   static async hasPermission(permission: string): Promise<boolean> {
     try {
-      const { data, error } = await supabase.rpc('has_permission', {
+      const { data, error } = await supabase.rpc('user_has_permission', {
         permission_name: permission
       });
 
@@ -251,6 +286,46 @@ export class AuthService {
     } catch (error) {
       console.error('Error checking salon manager status:', error);
       return false;
+    }
+  }
+
+  // Get current user's role from database
+  static async getCurrentUserRole(): Promise<UserRole | null> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return null;
+
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) throw error;
+      return data?.role as UserRole || null;
+    } catch (error) {
+      console.error('Error getting current user role:', error);
+      return null;
+    }
+  }
+
+  // Get current user's salon ID from database
+  static async getCurrentUserSalonId(): Promise<string | null> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return null;
+
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('salon_id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) throw error;
+      return data?.salon_id || null;
+    } catch (error) {
+      console.error('Error getting current user salon ID:', error);
+      return null;
     }
   }
 }
