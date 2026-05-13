@@ -21,7 +21,8 @@
       "mcp__supabase__apply_migration",
       "mcp__supabase__execute_sql",
       "Bash(grep -E \"\\\\.ts$\")",
-      "Bash(awk '{print $NF}')"
+      "Bash(awk '{print $NF}')",
+      "Bash(npx tsc *)"
     ]
   },
   "enableAllProjectMcpServers": true,
