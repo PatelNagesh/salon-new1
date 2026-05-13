@@ -2,7 +2,7 @@
  * Base Controller Interface
  * Defines the contract for all controller implementations
  */
-export interface IController<T, C, U> {
+export interface IController<T = any, C = any, U = any> {
   /**
    * Handle create request
    * @param req - The request object

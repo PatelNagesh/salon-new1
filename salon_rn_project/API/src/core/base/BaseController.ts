@@ -7,7 +7,7 @@ import { BaseException } from '../exceptions/BaseException';
  * Base Controller Implementation
  * Provides common controller functionality with request/response handling
  */
-export abstract class BaseController<T, C, U> implements IController<T, C, U> {
+export abstract class BaseController<T = any, C = any, U = any> implements IController<T, C, U> {
   protected logger: Logger;
   protected responseFormatter: ResponseFormatter;
 

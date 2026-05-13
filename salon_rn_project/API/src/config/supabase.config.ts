@@ -67,7 +67,7 @@ export function createSupabaseClient(config?: SupabaseConfig): SupabaseClient {
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: true,
-      storage: window?.localStorage // Use localStorage in browser
+      storage: typeof window !== 'undefined' ? window.localStorage : undefined
     },
     db: {
       schema: 'public'

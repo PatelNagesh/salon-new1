@@ -100,4 +100,73 @@ export class ProfileController extends BaseController implements IProfileControl
       this.handleError(error, res);
     }
   }
+
+  async createProfile(req: any, res: any): Promise<void> {
+    try {
+      const profileData = req.body;
+
+      const profile = await this.profileRepository.create(profileData);
+
+      res.status(HttpStatus.CREATED).json({
+        success: true,
+        data: profile,
+        message: 'Profile created successfully',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      this.handleError(error, res);
+    }
+  }
+
+  async deleteProfile(req: any, res: any): Promise<void> {
+    try {
+      const { id } = req.params;
+
+      await this.profileRepository.delete(id);
+
+      res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Profile deleted successfully',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      this.handleError(error, res);
+    }
+  }
+
+  async uploadProfileImage(req: any, res: any): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { imageUrl } = req.body;
+
+      const profile = await this.profileRepository.update(id, { avatar_url: imageUrl });
+
+      res.status(HttpStatus.OK).json({
+        success: true,
+        data: profile,
+        message: 'Profile image uploaded successfully',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      this.handleError(error, res);
+    }
+  }
+
+  async updatePreferences(req: any, res: any): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { preferences } = req.body;
+
+      const profile = await this.profileRepository.update(id, { preferences });
+
+      res.status(HttpStatus.OK).json({
+        success: true,
+        data: profile,
+        message: 'Preferences updated successfully',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      this.handleError(error, res);
+    }
+  }
 }
